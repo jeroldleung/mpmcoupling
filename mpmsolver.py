@@ -1,6 +1,6 @@
 import taichi as ti
-import MaterialPoint
-import Grid
+import materialpoint
+import grid
 import tools
 import config
 

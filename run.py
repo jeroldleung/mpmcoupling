@@ -1,18 +1,18 @@
 import taichi as ti
-import MaterialPoint
-import Grid
-import mpm
+import materialpoint as mp
+import grid
+import mpmsolver
 import config
 
 ti.init(arch=ti.vulkan)
 
-jelly = MaterialPoint.Jelly(rho=500, width=0.2)
-water = MaterialPoint.Water(rho=1000, width=0.4)
+jelly = mp.Jelly(rho=500, width=0.2)
+water = mp.Water(rho=1000, width=0.4)
 print(f'jelly: {jelly.num}')
 print(f'water: {water.num}')
 
-grid1 = Grid.Grid()
-grid2 = Grid.Grid()
+grid1 = grid.Grid()
+grid2 = grid.Grid()
 
 
 def init():
@@ -38,16 +38,16 @@ while window.running:
         grid1.clear()
         grid2.clear()
 
-        mpm.particle_to_grid(jelly, grid1)
-        mpm.particle_to_grid(water, grid2)
+        mpmsolver.particle_to_grid(jelly, grid1)
+        mpmsolver.particle_to_grid(water, grid2)
 
-        mpm.update_grid_vel(grid1, grid2)
+        mpmsolver.update_grid_vel(grid1, grid2)
 
         grid1.boundary_handle(config.bound, False)
         grid2.boundary_handle(config.bound - 1, True)
 
-        mpm.grid_to_particle(grid1, jelly)
-        mpm.grid_to_particle(grid2, water)
+        mpmsolver.grid_to_particle(grid1, jelly)
+        mpmsolver.grid_to_particle(grid2, water)
 
     canvas.circles(jelly.px, radius=0.005, color=(1.0, 0.5, 0.8))
     canvas.circles(water.px, radius=0.005, color=(0.5, 0.8, 0.9))
